@@ -1,4 +1,4 @@
-package com.weatherforecastapp;
+package node.modules;
 
 import android.os.Bundle;
 

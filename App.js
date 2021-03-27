@@ -1,21 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, ScrollView, View} from 'react-native';
+import * as Location from "expo-location";
+import LocationPage from "./src/LocationPage";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    const [status, setStatus] = useState(false)
+    useEffect(() => {(async () => {
+        const {status} = await Location.requestPermissionsAsync()
+        if (status === 'granted') {
+            setStatus(true)
+            return;
+        }
+    })()}, [])
+
+    return status ? (
+        <LocationPage/>
+    ) : (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>Location permission denied, please grant permission or look up via search</Text>
+        </View>
+    )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
