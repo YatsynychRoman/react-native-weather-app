@@ -37,17 +37,16 @@ export default function LocationHourlyForecastWeather({location}) {
                 if (forecast !== weatherResponse.data) setForecast(weatherResponse.data)
             }
         })()
-    }, [])
-
+    }, [location])
 
     return forecast ? (
         <View style={styles.innerContainer}>
-            <ScrollView contentContainerStyle={{marginTop: '15px%', marginLeft: 25}} horizontal={true} showsHorizontalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{marginTop: '15px%', marginLeft: 10}} horizontal={true} showsHorizontalScrollIndicator={false}>
                 {forecast.hourly.map( item => {
                         return (<View key={forecast.hourly.indexOf(item)} style={{width: width - 350, flex: 1, alignItems: 'center', justifyContent: 'flex-start',}}>
-                            <Text style={{fontSize: 20}}>{Math.floor(item.temp)}°</Text>
+                            <Text style={{fontSize: 20, color: 'white'}}>{Math.floor(item.temp)}°</Text>
                             <Image style={{width: 45, height: 45}} source={images[item.weather[0].icon]}/>
-                            <Text style={{fontSize: 15}}>{moment(item.dt * 1000).format('HH:mm')}</Text>
+                            <Text style={{fontSize: 15, color: 'white'}}>{moment(item.dt * 1000).format('HH:mm')}</Text>
                         </View>)
                     }
                 )}
