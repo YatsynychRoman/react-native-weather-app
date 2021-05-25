@@ -1,9 +1,9 @@
-import {StyleSheet} from "react-native";
+import {Platform, StyleSheet} from "react-native";
 
 export const styles = StyleSheet.create({
     appContainer: {
         flex: 1,
-        backgroundColor: '#555555',
+        paddingTop: Platform.OS === 'ios' ? '30px%' : 70,
         alignItems: 'center',
         justifyContent: 'flex-start',
     },

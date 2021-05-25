@@ -13,12 +13,11 @@ export default function App() {
             const {status} = await Location.requestPermissionsAsync()
             if (status === 'granted') {
                 setStatus(true)
-                return;
             }
         })()
     }, [])
 
-    return <ScrollView horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
+    return <ScrollView horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false} bounces={false} nestedScrollEnabled={true}>
         <View style={{width: width, height: height}}>{
             status ?
                 <LocationPage/>

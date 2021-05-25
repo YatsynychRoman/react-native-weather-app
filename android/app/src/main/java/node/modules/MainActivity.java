@@ -10,6 +10,8 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import expo.modules.splashscreen.singletons.SplashScreen;
 import expo.modules.splashscreen.SplashScreenImageResizeMode;
 
+import com.reactnativemmkv.MmkvModulePackage;
+
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,28 @@ public class MainActivity extends ReactActivity {
     SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class, false);
   }
 
+  new ReactNativeHost(this) {
+          @Override
+          public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+          }
+
+          @Override
+          protected List<ReactPackage> getPackages() {
+            return new PackageList(this).getPackages();
+          }
+
+          @Override
+          protected String getJSMainModuleName() {
+            return "index";
+          }
+
+          // Add this method here!
+          @Override
+          protected JSIModulePackage getJSIModulePackage() {
+            return new MmkvModulePackage();
+          }
+        };
 
     /**
      * Returns the name of the main component registered from JavaScript.

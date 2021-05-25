@@ -62,32 +62,35 @@ export default function LocationPage() {
     }
 
     return location ? (
+        <ImageBackground
+            source={images[background]}
+            style={{
+                width: width,
+                height: height + 200,
+                flex: 1,
+                resizeMode: 'stretch',
+                justifyContent: 'center',
+            }}
+        >
         <ScrollView
+            nestedScrollEnabled={true}
             style={{flex: 1}}
             contentContainerStyle={styles.appContainer}
             refreshControl={
                 <RefreshControl
+                    colors={['white']}
+                    tintColor='white'
                     refreshing={refresh}
                     onRefresh={_onRefresh}
                 />
             }
         >
-            <ImageBackground
-                source={images[background]}
-                style={{
-                    paddingTop: 21,
-                    width: width,
-                    height: height + 500,
-                    flex: 1,
-                    resizeMode: 'stretch',
-                    justifyContent: 'center',
-                }}
-            >
                 <CurrentLocationWeather location={location}/>
                 <LocationHourlyForecastWeather location={location}/>
                 <LocationDailyForecast location={location}/>
-            </ImageBackground>
+
         </ScrollView>
+        </ImageBackground>
     ) : (
         <View style={styles.appContainer}><Text>Loading...</Text></View>
     )

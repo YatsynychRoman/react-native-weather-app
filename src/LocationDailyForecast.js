@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {Text, View, Image, Dimensions} from 'react-native'
 import {API_KEY} from '@env'
-import {styles} from "./styles"
+import {useNetInfo} from '@react-native-community/netinfo'
 import axios from "axios"
 import moment from 'moment'
+//import {MMKV} from "react-native-mmkv";
 
 const images = {
     "01d": require('./static/01d.png'),
@@ -33,11 +34,16 @@ export default function LocationDailyForecast({location}) {
 
     useEffect(() => {
         (async () => {
+            if(useNetInfo.isConnected) {
+               setForecast(JSON.parse(localStorage.getItem('currentWeatherByLocation')))
+            }
+
             if (location) {
                 const weatherResponse = await axios.get(`http://api.openweathermap.org/data/2.5/onecall?exclude=current,minutely,hourly,alerts&units=metric&lang=en&lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}`)
                 if (forecast !== weatherResponse.data) {
                     weatherResponse.data.daily.shift()
                     setForecast(weatherResponse.data)
+                    localStorage.setItem('dailyForecastByLocation', JSON.stringify(weatherResponse.data))
                 }
             }
         })()
@@ -54,9 +60,9 @@ export default function LocationDailyForecast({location}) {
                             <Image source={images[item.weather[0].icon]} style={{width: 40, height: 40}}/>
                             <Text style={{fontSize: 14, color: '#03a5fc'}}>{Math.round(item.pop * 100)}%</Text>
                         </View>
-                        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{width: 150,flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                             <Text style={{fontSize: 18, width: 40, color: 'white'}}>{Math.floor(item.temp.max)}°</Text>
-                            <Text style={{fontSize: 18, textAlign: 'right', color: '#7d7d7d'}}>{Math.floor(item.temp.min)}°</Text>
+                            <Text style={{fontSize: 18, textAlign: 'right', color: '#6d6d6d'}}>{Math.floor(item.temp.min)}°</Text>
                         </View>
                     </View>
                 )

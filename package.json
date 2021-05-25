@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "5.9.7",
     "ant-mobile": "^0.0.0",
     "antd": "^4.12.3",
     "antd-mobile": "^2.3.4",
@@ -27,6 +28,7 @@
     "react-native-dotenv": "^2.5.3",
     "react-native-elements": "^3.3.2",
     "react-native-gesture-handler": "~1.8.0",
+    "react-native-mmkv": "^1.1.6",
     "react-native-reanimated": "~1.13.0",
     "react-native-screens": "~2.15.0",
     "react-native-unimodules": "~0.12.0",

@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {Text, View, Dimensions} from 'react-native';
+import {Text, View, Dimensions, Platform} from 'react-native';
 import {API_KEY} from '@env';
 import axios from "axios";
 import moment from 'moment'
+import {useNetInfo} from '@react-native-community/netinfo'
+//import { MMKV } from 'react-native-mmkv';
 
 const { width } = Dimensions.get('window');
 
@@ -32,16 +34,23 @@ export default function LocationHourlyForecastWeather({location}) {
 
     useEffect(() => {
         (async () => {
+            if(useNetInfo.isConnected) {
+               setForecast(JSON.parse(localStorage.getItem('currentWeatherByLocation')))
+            }
+
             if (location) {
                 const weatherResponse = await axios.get(`http://api.openweathermap.org/data/2.5/onecall?exclude=current,minutely,daily,alerts&units=metric&lang=en&lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${API_KEY}`)
-                if (forecast !== weatherResponse.data) setForecast(weatherResponse.data)
+                if (forecast !== weatherResponse.data) {
+                    setForecast(weatherResponse.data)
+                    localStorage.setItem('hourlyForecastByLocation', JSON.stringify(weatherResponse.data))
+                }
             }
         })()
     }, [location])
 
     return forecast ? (
         <View style={styles.innerContainer}>
-            <ScrollView contentContainerStyle={{marginTop: '15px%', marginLeft: 10}} horizontal={true} showsHorizontalScrollIndicator={false}>
+            <ScrollView nestedScrollEnabled={true} contentContainerStyle={{marginTop: Platform.OS === 'ios' ? '15px%' : 30, marginLeft: 10}} horizontal={true} showsHorizontalScrollIndicator={false}>
                 {forecast.hourly.map( item => {
                         return (<View key={forecast.hourly.indexOf(item)} style={{width: width - 350, flex: 1, alignItems: 'center', justifyContent: 'flex-start',}}>
                             <Text style={{fontSize: 20, color: 'white'}}>{Math.floor(item.temp)}°</Text>
